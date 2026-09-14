@@ -80,29 +80,33 @@ button{border:0;border-radius:10px;padding:10px 13px;font-weight:800;cursor:poin
 </section>
 
 <section class="card">
-<div class="step">② 사고·업무 사실 입력</div>
+<div class="step">② 신고접수 내용 한 번에 입력</div>
+<div class="notice">일시·장소·선박·인원 등을 따로 입력하지 않아도 됩니다. 신고접수 내용을 <b>그대로 한 번에 붙여넣으면</b> 아래 정보로 자동 인식합니다.</div>
+<div class="full" style="margin-top:10px"><label>신고접수 / 최초 확인 내용</label><textarea id="intake" style="min-height:150px" placeholder="예: 2026. 9. 15. 10:00 인천 영종도 을왕리해수욕장 서방 2해리 해상에서 모터보트(선명미상)가 전복되어 탑승자 3명이 물에 빠졌다"></textarea></div>
+<div class="actions"><button class="primary" onclick="parseIntake()">내용 인식하기</button><button class="blue" onclick="intakeExample()">신고 예시 입력</button></div>
+<div id="parseResult" class="updatebox hide"></div>
+
+<div class="step" style="margin-top:15px">자동 인식 결과 <span class="small">(필요할 때만 직접 수정)</span></div>
 <div class="grid">
-<div><label>발생 일시</label><input id="date" placeholder="2026. 9. 14. 08:30경"></div>
-<div><label>장소</label><input id="place" placeholder="인천 영흥도 인근 해상"></div>
-<div><label>선박명 / 종류</label><input id="ship" placeholder="○○호 / 어선"></div>
-<div><label>톤수·규모</label><input id="size" placeholder="9.77톤"></div>
-<div><label>승선원·인원</label><input id="people" placeholder="승선원 5명"></div>
-<div><label>인명피해</label><input id="casualty" placeholder="인명피해 없음"></div>
-<div><label>출동세력</label><input id="forces" placeholder="경비함정 2척, 구조대"></div>
-<div><label>현재 상황</label><input id="status" placeholder="진화 완료 / 수색 중"></div>
-<div class="full"><label>사고·업무 경위 <span class="small">(확인된 사실만)</span></label><textarea id="facts" placeholder="신고 내용 → 현장 상황 → 확인된 사실 순으로 입력"></textarea></div>
-<div class="full"><label>사고 원인 <span class="small">(확인된 경우에만 입력 · 1보에서는 자동 비공개)</span></label><input id="cause" placeholder="예: 기관실 전기배선에서 발화한 것으로 확인"></div>
-<div class="full"><label>추가 확인사항 <span class="small">(2보 이후 새로 확인된 사실만 입력)</span></label><textarea id="updates" placeholder="예: 승선원 5명 전원 안전 확인, 실종자 1명 추가 확인 등"></textarea></div>
-<div class="full"><label>확정 사고 경위 <span class="small">(3보·종합에서만 반영)</span></label><textarea id="confirmedFacts" placeholder="최종 확인된 사고 발생부터 현재까지의 경위를 입력"></textarea></div>
-<div class="full"><label>구조·수색·조치 결과 <span class="small">(확인된 결과만)</span></label><textarea id="resultAction" placeholder="예: 실종자 발견, 화재 진화, 오염 방제 완료 등"></textarea></div>
-
-<div class="full"><label>해경 조치</label><textarea id="action" placeholder="출동, 구조, 수색, 진화, 방제, 단속 등 실제 조치"></textarea></div>
-<div class="full"><label>향후 조치·당부</label><textarea id="extra" placeholder="원인 조사, 추가 수색, 관계기관 협조, 안전수칙 당부 등"></textarea></div>
-<div class="full"><label>관계자 발언 <span class="small">(없으면 자동 생성하지 않고 기본 문구 사용)</span></label><input id="quote" placeholder="관계자 실제 발언이 있다면 입력"></div>
+<div><label>발생 일시</label><input id="date" placeholder="자동 인식"></div>
+<div><label>地点 / 장소</label><input id="place" placeholder="자동 인식"></div>
+<div><label>선박명 / 종류</label><input id="ship" placeholder="자동 인식"></div>
+<div><label>톤수·규모</label><input id="size" placeholder="필요 시 입력"></div>
+<div><label>승선원·인원</label><input id="people" placeholder="자동 인식"></div>
+<div><label>인명피해</label><input id="casualty" placeholder="자동 인식"></div>
+<div><label>출동세력</label><input id="forces" placeholder="필요 시 입력"></div>
+<div><label>현재 상황</label><input id="status" placeholder="필요 시 입력"></div>
+<div class="full"><label>최초 확인사항 <span class="small">(신고접수 원문을 기준으로 자동 입력)</span></label><textarea id="facts" placeholder="내용 인식하기를 누르면 신고접수 내용이 들어갑니다."></textarea></div>
+<div class="full"><label>추가 확인사항 <span class="small">(2보 이후 새로 확인된 사실만 입력)</span></label><textarea id="updates" placeholder="예: 탑승자 3명 전원 구조 확인"></textarea></div>
+<div class="full"><label>확정 사고 경위 <span class="small">(3보·종합에서만 반영)</span></label><textarea id="confirmedFacts" placeholder="최종 확인된 사고 경위"></textarea></div>
+<div class="full"><label>사고 원인 <span class="small">(확인된 경우에만 입력 · 1보에서는 자동 비공개)</span></label><input id="cause" placeholder="예: 조종 미숙으로 전복한 것으로 확인"></div>
+<div class="full"><label>해경 조치</label><textarea id="action" placeholder="신고접수 후 실제 출동·구조·수색 등 조치"></textarea></div>
+<div class="full"><label>구조·수색·조치 결과 <span class="small">(확인된 결과만)</span></label><textarea id="resultAction" placeholder="예: 탑승자 3명 전원 구조"></textarea></div>
+<div class="full"><label>향후 조치·당부</label><textarea id="extra" placeholder="원인 조사, 추가 수색, 안전수칙 당부 등"></textarea></div>
+<div class="full"><label>관계자 발언 <span class="small">(실제 발언이 있을 때만 입력)</span></label><input id="quote" placeholder="관계자 실제 발언"></div>
 </div>
-<div class="actions"><button class="primary" onclick="renderTitles()">제목 10개 추천</button><button class="blue" onclick="example()">실전 예시 입력</button></div>
+<div class="actions"><button class="primary" onclick="renderTitles()">제목 10개 추천</button></div>
 </section>
-
 <section class="card">
 <div class="step">③ 제목 전략</div>
 <div class="chips" id="styleTabs"></div>
@@ -233,6 +237,40 @@ A.forEach((x,i)=>{let d=document.createElement("div");d.className="head";d.datas
 $("s1").textContent=A.filter(x=>x[1].includes("중부해경")).length;$("s2").textContent=A.filter(x=>/해상|선박|사고|해경/.test(x[1])).length;$("s3").textContent=A.filter(x=>/정책|캠페인|협력|안전/.test(x[1])).length;
 }
 function setTone(x){tone=x;["tone1","tone2","tone3"].forEach(id=>$(id).classList.remove("on"));$("tone"+(x==="정석형"?1:x==="기자친화형"?2:3)).classList.add("on")}
+function intakeExample(){
+  $("intake").value="2026. 9. 15. 10:00 인천 영종도 을왕리해수욕장 서방 2해리 해상에서 모터보트(선명미상)가 전복되어 탑승자 3명이 물에 빠졌다";
+  parseIntake();
+}
+function parseIntake(){
+  const raw=V("intake");
+  if(!raw){alert("신고접수 내용을 입력해 주세요.");return}
+  const text=raw.replace(/\s+/g," ").trim();
+  let date="", place="", ship="", people="", casualty="";
+  const dm=text.match(/(20\d{2}[.\-/]\s*\d{1,2}[.\-/]\s*\d{1,2}(?:[.]?)\s*(?:\d{1,2}:\d{2}(?:경)?|\d{1,2}시(?:\s*\d{1,2}분)?(?:경)?))/);
+  if(dm) date=dm[1].replace(/\s+/g," ");
+  else { const dm2=text.match(/(\d{1,2}[.]\s*\d{1,2}[.]\s*\d{1,2}[.]?\s*(?:\d{1,2}:\d{2}(?:경)?|\d{1,2}시(?:\s*\d{1,2}분)?(?:경)?))/); if(dm2) date=dm2[1].replace(/\s+/g," "); }
+  // 장소: '에서' 앞부분에서 일시를 제거하고, 사고행위 앞까지의 지명을 추출
+  let before=text;
+  if(date) before=before.replace(date,"").trim();
+  const pm=before.match(/(.+?)(?:에서|서)\s+(?:모터보트|고무보트|낚시어선|어선|여객선|선박|보트|유람선|화물선|예인선|레저보트|카약|수상오토바이|차량|사람)/);
+  if(pm) place=pm[1].trim().replace(/[,:;]+$/g,"");
+  else { const pm2=before.match(/(.+?)(?:에서|서)\s+[^\s]+\s*(?:사고|전복|침몰|충돌|추락|익수|조난)/); if(pm2) place=pm2[1].trim(); }
+  const sm=text.match(/((?:모터보트|고무보트|낚시어선|어선|여객선|화물선|예인선|레저보트|카약|수상오토바이|유람선|선박|보트)(?:\s*\([^)]*\))?(?:\s*\S+호)?)/);
+  if(sm) ship=sm[1].trim();
+  const im=text.match(/(?:탑승자|승선원|승객|선원|인원|사람)\s*(?:은|는|이|가)?\s*(\d+)\s*명/);
+  if(im) people=`${im[1]}명`;
+  if(/물에 빠지|해상으로 추락|익수|물에 빠졌/.test(text)) casualty=people?`${people} 물에 빠짐` : "익수자 발생";
+  if(/인명피해 없/.test(text)) casualty="인명피해 없음";
+  $("date").value=date; $("place").value=place; $("ship").value=ship; $("people").value=people; $("casualty").value=casualty; $("facts").value=text;
+  if(/전복/.test(text)) { $("major").value="선박사고"; setMinor(); $("minor").value="전복·침몰"; }
+  else if(/화재|불이/.test(text)) { $("major").value="선박사고"; setMinor(); $("minor").value="화재"; }
+  else if(/충돌/.test(text)) { $("major").value="선박사고"; setMinor(); $("minor").value="충돌"; }
+  else if(/좌초/.test(text)) { $("major").value="선박사고"; setMinor(); $("minor").value="좌초"; }
+  else if(/추락/.test(text)) { $("major").value="인명사고"; setMinor(); $("minor").value="해상추락"; }
+  else if(/익수|물에 빠/.test(text)) { $("major").value="인명사고"; setMinor(); $("minor").value="익수"; }
+  const r=[]; [["일시",date],["장소",place],["선박",ship],["인원",people],["인명피해",casualty]].forEach(([k,v])=>r.push(`<b>${k}</b> ${v||"인식하지 못함"}`));
+  $("parseResult").innerHTML="<b>자동 인식 결과</b><br>"+r.join("　·　")+"<br><span class=\"small\">인식 결과는 초안 작성용입니다. 원문과 대조해 수정할 수 있습니다.</span>"; $("parseResult").classList.remove("hide"); renderTitles(); check();
+}
 function example(){
 $("major").value="선박사고";setMinor();$("minor").value="화재";
 $("date").value="2026. 9. 14. 08:30경";$("place").value="인천 영흥도 인근 해상";$("ship").value="○○호 / 어선";$("size").value="9.77톤";$("people").value="승선원 5명";$("casualty").value="인명피해 없음";$("forces").value="경비함정 2척, 구조세력";$("status").value="화재 진화 완료";
@@ -333,7 +371,7 @@ function check(){
   $("checklist").innerHTML=rows.map(r=>`<div class="${r[1]?"good":"warn"}">${r[1]?"☑":"☐"} ${r[0]} — ${r[1]?"입력 완료":"확인 필요"}</div>`).join("");
 }
 function collectData(){
-  const ids=["major","minor","date","place","ship","size","people","casualty","forces","status","facts","updates","confirmedFacts","cause","action","resultAction","extra","quote"];
+  const ids=["intake","major","minor","date","place","ship","size","people","casualty","forces","status","facts","updates","confirmedFacts","cause","action","resultAction","extra","quote"];
   return {stage,tone,selected,currentFilter,...Object.fromEntries(ids.map(id=>[id,V(id)]))};
 }
 function applyData(d){
@@ -394,7 +432,7 @@ try{let rss=`https://news.google.com/rss/search?q=${encodeURIComponent('site:kor
 function openPolicy(){window.open("https://www.korea.kr/briefing/pressReleaseList.do?pWiseMinistry=ministryNews&repCode=C00002&repCodeType=%EC%A0%95%EB%B6%80%EB%B6%80%EC%B2%98","_blank")}
 function copyResult(){navigator.clipboard?.writeText($("result").textContent);alert("보도자료 초안을 복사했습니다.")}
 function saveTxt(){let b=new Blob([$("result").textContent],{type:"text/plain;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="중부해경_보도자료_7차초안.txt";a.click()}
-function saveDraft(){localStorage.setItem("jbhg7",JSON.stringify(Object.fromEntries(["major","minor","date","place","ship","size","people","casualty","forces","status","facts","cause","action","extra","quote"].map(id=>[id,V(id)]))));alert("현재 입력 내용을 이 브라우저에 저장했습니다.")}
+function saveDraft(){localStorage.setItem("jbhg7",JSON.stringify(Object.fromEntries(["intake","major","minor","date","place","ship","size","people","casualty","forces","status","facts","cause","action","extra","quote"].map(id=>[id,V(id)]))));alert("현재 입력 내용을 이 브라우저에 저장했습니다.")}
 function loadDraft(){try{let d=JSON.parse(localStorage.getItem("jbhg7")||"{}");if(!Object.keys(d).length)return;Object.entries(d).forEach(([k,v])=>{if($(k))$(k).value=v});setMinor()}catch(e){}}
 function resetAll(){document.querySelectorAll("input,textarea").forEach(x=>x.value="");selected="";$("result").textContent="제목을 선택한 뒤 「보도자료 완성」을 누르세요.";check()}
 setMinor();loadDraft();check();
