@@ -1,9 +1,0 @@
-{
-  "name": "중부해경 홍보계 보도자료 AI 비서 7차",
-  "short_name": "중부해경 보도자료",
-  "start_url": "./",
-  "display": "standalone",
-  "background_color": "#f2f5f8",
-  "theme_color": "#073b73",
-  "lang": "ko"
-}
